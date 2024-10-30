@@ -25,7 +25,7 @@ public class UserDetailsCustom implements UserDetailsService {
             throw new UsernameNotFoundException("username or Password is wrong.");
         }
         return new org.springframework.security.core.userdetails.User(
-                user.getName(),
+                user.getEmail(),
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );

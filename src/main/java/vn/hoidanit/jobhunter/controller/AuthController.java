@@ -50,6 +50,7 @@ public class AuthController {
 
         // create a token
         String access_token = this.securityUtil.createToken(authentication);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         ResLoginDTO res = new ResLoginDTO();

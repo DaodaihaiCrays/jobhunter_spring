@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import vn.hoidanit.jobhunter.domain.RestRespone;
+import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 
 
 // Class này dùng để format lại response trước khi trả về cho user
@@ -29,7 +30,14 @@ public class FormatRestRespone implements ResponseBodyAdvice {
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public Object beforeBodyWrite(
+            Object body,
+            MethodParameter returnType,
+            MediaType selectedContentType,
+            Class selectedConverterType,
+            ServerHttpRequest request,
+            ServerHttpResponse response
+    ) {
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
 
         if (body instanceof String) {
@@ -44,7 +52,8 @@ public class FormatRestRespone implements ResponseBodyAdvice {
             return body;
         } else {
             res.setData(body);
-            res.setMessage("success");
+            ApiMessage message = returnType.getMethodAnnotation(ApiMessage.class);
+            res.setMessage(message != null ? message.value() : "success");
         }
 
         return res;
