@@ -1,6 +1,7 @@
 package vn.hoidanit.jobhunter.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,16 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import vn.hoidanit.jobhunter.domain.RestRespone;
 import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.dto.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
+import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
 import vn.hoidanit.jobhunter.util.error.InvalidException;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -32,18 +36,33 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> CreateUserController(@RequestBody User userRequest) {
+    public ResponseEntity<ResCreateUserDTO> CreateUserController(@Valid  @RequestBody User userRequest) throws InvalidException {
+
+        if(this.userService.checkEmailExist(userRequest.getEmail()))
+            throw new InvalidException("Email is existed");
+
         String hashPassword = this.passwordEncoder.encode(userRequest.getPassword());
         userRequest.setPassword(hashPassword);
 
         User userNew = this.userService.CreateUserService(userRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userNew);
+
+        ResCreateUserDTO resCreateUserDTO = new ResCreateUserDTO();
+
+        resCreateUserDTO.setName(userNew.getName());
+        resCreateUserDTO.setAddress(userNew.getAddress());
+        resCreateUserDTO.setId(userNew.getId());
+        resCreateUserDTO.setGender(userNew.getGender());
+        resCreateUserDTO.setAge(userNew.getAge());
+        resCreateUserDTO.setCreatedAt(userNew.getCreatedAt());
+        resCreateUserDTO.setEmail(userNew.getEmail());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resCreateUserDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RestRespone<String>> DeleteUserController(@PathVariable("id") long id)
             throws InvalidException{
-        if (id < 1) throw new InvalidException("Id không được nhỏ hơn 0");
+        if (id < 1) throw new InvalidException("Id is not lower than 0");
 
         this.userService.DeleteUserService(id);
 
@@ -57,11 +76,23 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> GetUserByIdController(@PathVariable("id") long id) {
+    public ResponseEntity<ResCreateUserDTO> GetUserByIdController(@PathVariable("id") long id) {
+        System.out.println(id);
         User user = this.userService.GetUserByIdService(id);
+        System.out.println(user);
 
         if(user!=null) {
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+            ResCreateUserDTO resCreateUserDTO = new ResCreateUserDTO();
+
+            resCreateUserDTO.setName(user.getName());
+            resCreateUserDTO.setAddress(user.getAddress());
+            resCreateUserDTO.setId(user.getId());
+            resCreateUserDTO.setGender(user.getGender());
+            resCreateUserDTO.setAge(user.getAge());
+            resCreateUserDTO.setCreatedAt(user.getCreatedAt());
+            resCreateUserDTO.setEmail(user.getEmail());
+
+            return ResponseEntity.status(HttpStatus.OK).body(resCreateUserDTO);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -69,7 +100,7 @@ public class UserController {
     }
 
     @GetMapping()
-    @ApiMessage("Get users")
+    @ApiMessage("Get a list user")
     public ResponseEntity<ResultPaginationDTO> GetAllUsersController(
             @RequestParam("current") Optional<String> currentOptional,
             @RequestParam("pageSize") Optional<String> pageSizeOptional,
@@ -85,10 +116,19 @@ public class UserController {
     }
 
     @PutMapping()
-    public ResponseEntity<User> UpdateUserController(@RequestBody User userRequest) {
-        User user = this.userService.UpdateUserService(userRequest);
-        if(user != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<ResUpdateUserDTO> UpdateUserController(@RequestBody User userRequest) {
+        User userUpdate = this.userService.UpdateUserService(userRequest);
+
+        if(userUpdate != null) {
+            ResUpdateUserDTO resUpdateUserDTO = new ResUpdateUserDTO();
+
+            resUpdateUserDTO.setId(userUpdate.getId());
+            resUpdateUserDTO.setName(userUpdate.getName());
+            resUpdateUserDTO.setGender(userUpdate.getGender());
+            resUpdateUserDTO.setAge(userUpdate.getAge());
+            resUpdateUserDTO.setAddress(userUpdate.getAddress());
+
+            return ResponseEntity.status(HttpStatus.OK).body(resUpdateUserDTO);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }

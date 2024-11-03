@@ -66,8 +66,7 @@ public class SecurityConfiguration {
         };
     }
 
-    // convert data chứa trong token, lưu vào Spring Security
-    // Context để reuse
+    // convert data chứa trong token, lưu vào Spring Security Context để reuse
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -92,7 +91,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/", "/login").permitAll()
+                                .requestMatchers("/", "api/v1/auth/login", "api/v1/auth/refresh").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // dòng dưới tự kích hoạt filter BearerTokenAuthenticationFilter
@@ -102,12 +101,12 @@ public class SecurityConfiguration {
                         // khi token không hợp lệ hoặc thiếu token.
                     .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
-//                .exceptionHandling(
-//                        exceptions -> exceptions
-//                                // khi người dùng chưa đăng nhập hoặc thiếu token.
-//                                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) //401
-//                                // khi người dùng không có quyền truy cập tài nguyên.
-//                                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
+                .exceptionHandling(
+                        exceptions -> exceptions
+                                // khi người dùng chưa đăng nhập hoặc thiếu token.
+                                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) //401
+                                // khi người dùng không có quyền truy cập tài nguyên.
+                                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

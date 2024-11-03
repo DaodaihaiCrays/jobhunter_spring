@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/companies")
+@RequestMapping("api/v1/companies")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -33,11 +33,11 @@ public class CompanyController {
 
     @GetMapping()
     ResponseEntity<ResultPaginationDTO> GetAllCompaniesController(
-            @RequestParam("current") Optional<String> currentOptional,
-            @RequestParam("pageSize") Optional<String> pageSizeOptional
+            @RequestParam("page") Optional<String> currentOptional,
+            @RequestParam("size") Optional<String> pageSizeOptional
     ) {
         int currentPage = Integer.parseInt(currentOptional.isPresent() ? currentOptional.get() : "1");
-        int pageSize = Integer.parseInt(pageSizeOptional.isPresent() ? pageSizeOptional.get() : "4");
+        int pageSize = Integer.parseInt(pageSizeOptional.isPresent() ? pageSizeOptional.get() : "5");
 
         Pageable pageable = PageRequest.of(currentPage-1, pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(this.companyService.GetAllCompaniesService(pageable));

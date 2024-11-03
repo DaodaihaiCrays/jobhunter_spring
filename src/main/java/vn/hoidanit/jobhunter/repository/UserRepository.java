@@ -13,9 +13,13 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-  public User findById(long id);
+//  public User findById(long id);
   public User findByEmail(String email);
+
+  public Boolean existsByEmail(String email);
 
   @Query("SELECT u FROM User u WHERE u.email LIKE %:domain ORDER BY u.email ASC")
   Page<User> findUsersByEmailDomain(@Param("domain") String domain, Pageable pageable);
+
+  User findUserByRefreshTokenAndEmail(String token, String email);
 }
