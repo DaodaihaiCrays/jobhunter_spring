@@ -10,10 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import vn.hoidanit.jobhunter.domain.RestRespone;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.LoginDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResLoginDTO;
+import vn.hoidanit.jobhunter.domain.request.ReqLoginDTO;
+import vn.hoidanit.jobhunter.domain.response.ResLoginDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
@@ -39,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResLoginDTO> Login(@Valid @RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<ResLoginDTO> Login(@Valid @RequestBody ReqLoginDTO loginDTO) {
         // Nạp input gồm username/password vào Security
         // Đóng gói thông tin đăng nhập của người dùng một cách an toàn
         // trước khi được gửi đến quy trình xác thực của Spring Security.

@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import vn.hoidanit.jobhunter.domain.RestRespone;
+import vn.hoidanit.jobhunter.domain.response.RestRespone;
 
 import java.io.IOException;
 import java.util.Optional;

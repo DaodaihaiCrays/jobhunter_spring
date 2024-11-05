@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Page<User> findUsersByEmailDomain(@Param("domain") String domain, Pageable pageable);
 
   User findUserByRefreshTokenAndEmail(String token, String email);
+
+  List<User> findByCompany(Company company);
 }

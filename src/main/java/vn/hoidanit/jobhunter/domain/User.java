@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
 
@@ -15,6 +16,7 @@ import java.time.Instant;
 @Table(name = "users")
 @Getter
 @Setter
+@ToString
 public class User {
 
     @Id
@@ -45,6 +47,10 @@ public class User {
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @Override
     public String toString() {
