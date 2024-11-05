@@ -1,19 +1,15 @@
-package vn.hoidanit.jobhunter.domain.dto;
+package vn.hoidanit.jobhunter.domain.request;
 
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
 
-import java.time.Instant;
-
 @Getter
 @Setter
-public class ResCreateUserDTO {
+public class ReqUpdateUserDTO {
     private long id;
     private String name;
-    private String email;
     private GenderEnum gender;
     private String address;
     private int age;
-    private Instant createdAt;
 }

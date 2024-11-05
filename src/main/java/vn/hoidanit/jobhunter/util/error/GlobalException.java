@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import vn.hoidanit.jobhunter.domain.RestRespone;
+import vn.hoidanit.jobhunter.domain.response.RestRespone;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,5 +68,18 @@ public class GlobalException {
         res.setError("404 Not Found. URL may not exist...");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
+    @ExceptionHandler(value = {
+            FileException.class
+    })
+    public ResponseEntity<RestRespone<Object>> handleFileException(Exception exception) {
+
+        RestRespone<Object> res = new RestRespone<Object>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(exception.getMessage());
+        res.setMessage("error when uploading a file");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
 
 }

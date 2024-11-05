@@ -1,13 +1,15 @@
-package vn.hoidanit.jobhunter.domain.dto;
+package vn.hoidanit.jobhunter.domain.response;
 
 import java.time.Instant;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
 
 @Getter
 @Setter
+@ToString
 public class ResUpdateUserDTO {
     private long id;
     private String name;
@@ -15,5 +17,17 @@ public class ResUpdateUserDTO {
     private String address;
     private int age;
     private Instant updatedAt;
+    private CompanyUser company;
+
+    @Getter
+    @Setter
+    @ToString
+    public static class CompanyUser {
+        private long id;
+        private String name;
+
+
+    }
+
 }
 

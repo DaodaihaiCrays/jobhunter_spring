@@ -10,17 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
-import vn.hoidanit.jobhunter.domain.RestRespone;
+import vn.hoidanit.jobhunter.domain.response.RestRespone;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.ResCreateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
-import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
 import vn.hoidanit.jobhunter.util.error.InvalidException;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -47,6 +45,7 @@ public class UserController {
         User userNew = this.userService.CreateUserService(userRequest);
 
         ResCreateUserDTO resCreateUserDTO = new ResCreateUserDTO();
+        ResCreateUserDTO.CompanyUser com = new ResCreateUserDTO.CompanyUser();
 
         resCreateUserDTO.setName(userNew.getName());
         resCreateUserDTO.setAddress(userNew.getAddress());
@@ -55,6 +54,12 @@ public class UserController {
         resCreateUserDTO.setAge(userNew.getAge());
         resCreateUserDTO.setCreatedAt(userNew.getCreatedAt());
         resCreateUserDTO.setEmail(userNew.getEmail());
+
+        if (userNew.getCompany() != null) {
+            com.setId(userNew.getCompany().getId());
+            com.setName(userNew.getCompany().getName());
+            resCreateUserDTO.setCompany(com);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resCreateUserDTO);
     }
@@ -77,12 +82,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResCreateUserDTO> GetUserByIdController(@PathVariable("id") long id) {
-        System.out.println(id);
+
         User user = this.userService.GetUserByIdService(id);
-        System.out.println(user);
+
 
         if(user!=null) {
             ResCreateUserDTO resCreateUserDTO = new ResCreateUserDTO();
+            ResCreateUserDTO.CompanyUser com = new ResCreateUserDTO.CompanyUser();
 
             resCreateUserDTO.setName(user.getName());
             resCreateUserDTO.setAddress(user.getAddress());
@@ -91,6 +97,12 @@ public class UserController {
             resCreateUserDTO.setAge(user.getAge());
             resCreateUserDTO.setCreatedAt(user.getCreatedAt());
             resCreateUserDTO.setEmail(user.getEmail());
+
+            if (user.getCompany() != null) {
+                com.setId(user.getCompany().getId());
+                com.setName(user.getCompany().getName());
+                resCreateUserDTO.setCompany(com);
+            }
 
             return ResponseEntity.status(HttpStatus.OK).body(resCreateUserDTO);
         }
@@ -118,15 +130,24 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<ResUpdateUserDTO> UpdateUserController(@RequestBody User userRequest) {
         User userUpdate = this.userService.UpdateUserService(userRequest);
-
+        System.out.println(userUpdate);
         if(userUpdate != null) {
             ResUpdateUserDTO resUpdateUserDTO = new ResUpdateUserDTO();
+            ResUpdateUserDTO.CompanyUser com = new ResUpdateUserDTO.CompanyUser();
 
             resUpdateUserDTO.setId(userUpdate.getId());
             resUpdateUserDTO.setName(userUpdate.getName());
             resUpdateUserDTO.setGender(userUpdate.getGender());
             resUpdateUserDTO.setAge(userUpdate.getAge());
             resUpdateUserDTO.setAddress(userUpdate.getAddress());
+
+            if (userUpdate.getCompany() != null) {
+                com.setId(userUpdate.getCompany().getId());
+                com.setName(userUpdate.getCompany().getName());
+
+                resUpdateUserDTO.setCompany(com);
+            }
+
 
             return ResponseEntity.status(HttpStatus.OK).body(resUpdateUserDTO);
         }
