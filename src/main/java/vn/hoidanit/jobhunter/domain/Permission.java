@@ -2,24 +2,26 @@ package vn.hoidanit.jobhunter.domain;
 
 import java.time.Instant;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
-import vn.hoidanit.jobhunter.util.enum_package.LevelEnum;
 
 @Entity
-@Table(name = "jobs")
+@Table(name = "permissions")
 @Getter
 @Setter
-@ToString
-public class Job {
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,38 +29,23 @@ public class Job {
     @NotBlank(message = "name is not empty")
     private String name;
 
-    @NotBlank(message = "location is not empty")
-    private String location;
+    @NotBlank(message = "apiPath is not empty")
+    private String apiPath;
 
-    private double salary;
-    private int quantity;
+    @NotBlank(message = "method is not empty")
+    private String method;
 
-    @Enumerated(EnumType.STRING)
-    private LevelEnum level;
+    @NotBlank(message = "module is not empty")
+    private String module;
 
-    @Column(columnDefinition = "MEDIUMTEXT")
-    private String description;
-
-    private Instant startDate;
-    private Instant endDate;
-    private boolean isActive;
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"jobs"})
-    @JoinTable(name = "job_skill", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
-
-    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
-    List<Resume> resumes;
-
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "permissions")
+    @JsonIgnore
+    private List<Role> roles;
 
     @PrePersist
     public void handleBeforeCreate() {

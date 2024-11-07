@@ -28,7 +28,7 @@ public class FileController {
     }
 
     @PostMapping()
-    public ResponseEntity<ResUploadFileDTO> upload(
+    public ResponseEntity<ResUploadFileDTO> Upload(
             @RequestParam(name = "file", required = false) MultipartFile file,
             @RequestParam("folder") String folder
     ) throws URISyntaxException, IOException, FindException {

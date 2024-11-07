@@ -98,7 +98,7 @@ public class AuthController {
 
     @GetMapping("/account")
     @ApiMessage("Get account via token")
-    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
+    public ResponseEntity<ResLoginDTO.UserGetAccount> GetAccount() {
 
         String email = securityUtil.getCurrentUserLogin().isPresent() ?
                 securityUtil.getCurrentUserLogin().get(): "";
@@ -120,7 +120,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<ResLoginDTO> getRefreshToken(
+    public ResponseEntity<ResLoginDTO> GetRefreshToken(
             @CookieValue(name = "cookie", defaultValue = "refresh_token_value") String cookie
     ) throws InvalidException {
 

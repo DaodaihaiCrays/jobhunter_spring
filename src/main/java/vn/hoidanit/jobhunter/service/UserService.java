@@ -90,8 +90,6 @@ public class UserService {
     public User UpdateUserService(User userUpdate) {
 
         User existingUser = this.GetUserByIdService(userUpdate.getId());
-        System.out.println(existingUser);
-        System.out.println("==============");
 
         if (existingUser != null) {
             if (userUpdate.getName() != null) {
@@ -120,7 +118,6 @@ public class UserService {
 
         return null;
     }
-
 
     public User GetUserByEmail(String email) {
         return this.userRepository.findByEmail(email);

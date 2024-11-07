@@ -32,15 +32,15 @@ public class JobController {
 
     @PostMapping()
     @ApiMessage("Create a job")
-    public ResponseEntity<ResCreateJobDTO> create(@Valid @RequestBody Job job) {
+    public ResponseEntity<ResCreateJobDTO> CreateAJob(@Valid @RequestBody Job job) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.jobService.create(job));
     }
 
     @PutMapping()
     @ApiMessage("Update a job")
-    public ResponseEntity<ResUpdateJobDTO> update(@Valid @RequestBody Job job) throws InvalidException {
-        Optional<Job> currentJob = this.jobService.fetchJobById(job.getId());
+    public ResponseEntity<ResUpdateJobDTO> UpdateAJob(@Valid @RequestBody Job job) throws InvalidException {
+        Optional<Job> currentJob = this.jobService.GetJobByIdService(job.getId());
         if (!currentJob.isPresent()) {
             throw new InvalidException("Job not found");
         }
@@ -49,24 +49,24 @@ public class JobController {
         job.setCreatedBy(currentJob.get().getCreatedBy());
 
         return ResponseEntity.ok()
-                .body(this.jobService.update(job));
+                .body(this.jobService.UpdateAJobService(job));
     }
 
     @DeleteMapping("/{id}")
     @ApiMessage("Delete a job by id")
-    public ResponseEntity<Void> delete(@PathVariable("id") long id) throws InvalidException {
-        Optional<Job> currentJob = this.jobService.fetchJobById(id);
+    public ResponseEntity<Void> DeleteAJob(@PathVariable("id") long id) throws InvalidException {
+        Optional<Job> currentJob = this.jobService.GetJobByIdService(id);
         if (!currentJob.isPresent()) {
             throw new InvalidException("Job not found");
         }
-        this.jobService.delete(id);
+        this.jobService.DeleteJobService(id);
         return ResponseEntity.ok().body(null);
     }
 
     @GetMapping("/{id}")
     @ApiMessage("Get a job by id")
-    public ResponseEntity<Job> getJob(@PathVariable("id") long id) throws InvalidException {
-        Optional<Job> currentJob = this.jobService.fetchJobById(id);
+    public ResponseEntity<Job> GetJobById(@PathVariable("id") long id) throws InvalidException {
+        Optional<Job> currentJob = this.jobService.GetJobByIdService(id);
         if (!currentJob.isPresent()) {
             throw new InvalidException("Job not found");
         }
@@ -76,7 +76,7 @@ public class JobController {
 
     @GetMapping()
     @ApiMessage("Get job with pagination")
-    public ResponseEntity<ResultPaginationDTO> getAllJob(
+    public ResponseEntity<ResultPaginationDTO> GetAllJob(
             @RequestParam("page") Optional<String> currentOptional,
             @RequestParam("size") Optional<String> pageSizeOptional)
     {

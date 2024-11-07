@@ -23,22 +23,22 @@ public class SkillService {
         return this.skillRepository.existsByName(name);
     }
 
-    public Skill fetchSkillById(long id) {
+    public Skill GetSkillByIdService(long id) {
         Optional<Skill> skillOptional = this.skillRepository.findById(id);
         if (skillOptional.isPresent())
             return skillOptional.get();
         return null;
     }
 
-    public Skill createSkill(Skill s) {
+    public Skill CreateSkillService(Skill s) {
         return this.skillRepository.save(s);
     }
 
-    public Skill updateSkill(Skill s) {
+    public Skill UpdateSkillService(Skill s) {
         return this.skillRepository.save(s);
     }
 
-    public void deleteSkill(long id) {
+    public void DeleteSkillService(long id) {
         // delete job (inside job_skill table)
         Optional<Skill> skillOptional = this.skillRepository.findById(id);
         Skill currentSkill = skillOptional.get();
@@ -48,7 +48,7 @@ public class SkillService {
         this.skillRepository.delete(currentSkill);
     }
 
-    public ResultPaginationDTO fetchAllSkills(Pageable pageable) {
+    public ResultPaginationDTO GetAllSkillsService(Pageable pageable) {
         Page<Skill> pageUser = this.skillRepository.findAll(pageable);
 
         ResultPaginationDTO rs = new ResultPaginationDTO();

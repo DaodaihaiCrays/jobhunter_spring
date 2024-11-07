@@ -28,19 +28,19 @@ public class SkillController {
 
     @PostMapping()
     @ApiMessage("Create a skill")
-    public ResponseEntity<Skill> create(@Valid @RequestBody Skill s) throws InvalidException {
+    public ResponseEntity<Skill> CreateASkill(@Valid @RequestBody Skill s) throws InvalidException {
         // check name
         if (s.getName() != null && this.skillService.isNameExist(s.getName())) {
             throw new InvalidException("Skill name = " + s.getName() + " đã tồn tại");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.skillService.createSkill(s));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.skillService.CreateSkillService(s));
     }
 
     @PutMapping()
     @ApiMessage("Update a skill")
-    public ResponseEntity<Skill> update(@Valid @RequestBody Skill s) throws InvalidException {
+    public ResponseEntity<Skill> UpdateASkill(@Valid @RequestBody Skill s) throws InvalidException {
         // check id
-        Skill currentSkill = this.skillService.fetchSkillById(s.getId());
+        Skill currentSkill = this.skillService.GetSkillByIdService(s.getId());
         if (currentSkill == null) {
             throw new InvalidException("Skill id = " + s.getId() + " không tồn tại");
         }
@@ -51,24 +51,24 @@ public class SkillController {
         }
 
         currentSkill.setName(s.getName());
-        return ResponseEntity.ok().body(this.skillService.updateSkill(currentSkill));
+        return ResponseEntity.ok().body(this.skillService.UpdateSkillService(currentSkill));
     }
 
     @DeleteMapping("/{id}")
     @ApiMessage("Delete a skill")
-    public ResponseEntity<Void> delete(@PathVariable("id") long id) throws InvalidException {
+    public ResponseEntity<Void> DeleteASkill(@PathVariable("id") long id) throws InvalidException {
         // check id
-        Skill currentSkill = this.skillService.fetchSkillById(id);
+        Skill currentSkill = this.skillService.GetSkillByIdService(id);
         if (currentSkill == null) {
             throw new InvalidException("skill id = " + id + " is not exist");
         }
-        this.skillService.deleteSkill(id);
+        this.skillService.DeleteSkillService(id);
         return ResponseEntity.ok().body(null);
     }
 
     @GetMapping()
     @ApiMessage("fetch all skills")
-    public ResponseEntity<ResultPaginationDTO> getAll(
+    public ResponseEntity<ResultPaginationDTO> GetAllSkills(
             @RequestParam("page") Optional<String> currentOptional,
             @RequestParam("size") Optional<String> pageSizeOptional
     ) {
@@ -78,6 +78,6 @@ public class SkillController {
         Pageable pageable = PageRequest.of(currentPage-1, pageSize);
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                this.skillService.fetchAllSkills(pageable));
+                this.skillService.GetAllSkillsService(pageable));
     }
 }

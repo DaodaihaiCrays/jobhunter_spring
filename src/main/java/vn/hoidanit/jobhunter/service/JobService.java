@@ -28,7 +28,7 @@ public class JobService {
         this.skillRepository = skillRepository;
     }
 
-    public Optional<Job> fetchJobById(long id) {
+    public Optional<Job> GetJobByIdService(long id) {
         return this.jobRepository.findById(id);
     }
 
@@ -70,7 +70,7 @@ public class JobService {
         return dto;
     }
 
-    public ResUpdateJobDTO update(Job j) {
+    public ResUpdateJobDTO UpdateAJobService(Job j) {
         // check skills
         if (j.getSkills() != null) {
             List<Long> reqSkills = j.getSkills()
@@ -83,8 +83,6 @@ public class JobService {
 
         // update job
         Job currentJob = this.jobRepository.save(j);
-        System.out.println(currentJob);
-        System.out.println("==============");
 
         // convert response
         ResUpdateJobDTO dto = new ResUpdateJobDTO();
@@ -112,7 +110,7 @@ public class JobService {
         return dto;
     }
 
-    public void delete(long id) {
+    public void DeleteJobService(long id) {
         this.jobRepository.deleteById(id);
     }
 
