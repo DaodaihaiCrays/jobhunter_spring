@@ -8,10 +8,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.request.ReqLoginDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResLoginDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -28,13 +30,16 @@ public class AuthController {
     private long expirationRefreshTokenJwt;
     private final UserService userService;
 
+    private final PasswordEncoder passwordEncoder;
+
     public AuthController(
             AuthenticationManagerBuilder authenticationManagerBuilder,
             SecurityUtil securityUtil,
-            UserService userService) {
+            UserService userService, PasswordEncoder passwordEncoder) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -66,14 +71,15 @@ public class AuthController {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                     currentUserDB.getId(),
                     currentUserDB.getEmail(),
-                    currentUserDB.getName()
+                    currentUserDB.getName(),
+                    currentUserDB.getRole()
             );
 
             res.setUser(userLogin);
         }
 
         // create a token
-        String access_token = this.securityUtil.createAccessToken(authentication.getName(), res.getUser());
+        String access_token = this.securityUtil.createAccessToken(authentication.getName(), res);
 
         res.setAccessToken(access_token);
 
@@ -99,24 +105,25 @@ public class AuthController {
     @GetMapping("/account")
     @ApiMessage("Get account via token")
     public ResponseEntity<ResLoginDTO.UserGetAccount> GetAccount() {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent()
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
 
-        String email = securityUtil.getCurrentUserLogin().isPresent() ?
-                securityUtil.getCurrentUserLogin().get(): "";
-
-        ResLoginDTO res = new ResLoginDTO();
         User currentUserDB = this.userService.GetUserByEmail(email);
-
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
-        ResLoginDTO.UserGetAccount userGetAccount = new  ResLoginDTO.UserGetAccount();
+        ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
 
-        if(currentUserDB!=null) {
+        if (currentUserDB != null) {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
+            userLogin.setRole(currentUserDB.getRole());
+
             userGetAccount.setUser(userLogin);
         }
 
         return ResponseEntity.ok().body(userGetAccount);
+
     }
 
     @GetMapping("/refresh")
@@ -143,14 +150,15 @@ public class AuthController {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                     currentUserDB.getId(),
                     currentUserDB.getEmail(),
-                    currentUserDB.getName()
+                    currentUserDB.getName(),
+                    currentUserDB.getRole()
             );
 
             res.setUser(userLogin);
         }
 
         // create a token
-        String access_token = this.securityUtil.createAccessToken(email, res.getUser());
+        String access_token = this.securityUtil.createAccessToken(email, res);
 
         res.setAccessToken(access_token);
 
@@ -200,6 +208,39 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, deleteSpringCookie.toString())
                 .body(null);
 
+    }
+
+    @PostMapping("/auth/register")
+    @ApiMessage("Register a new user")
+    public ResponseEntity<ResCreateUserDTO> register(@Valid @RequestBody User postManUser) throws InvalidException {
+        boolean isEmailExist = this.userService.checkEmailExist(postManUser.getEmail());
+        if (isEmailExist) {
+            throw new InvalidException(
+                    "email " + postManUser.getEmail() + "exists");
+        }
+
+        String hashPassword = this.passwordEncoder.encode(postManUser.getPassword());
+        postManUser.setPassword(hashPassword);
+        User userNew = this.userService.CreateUserService(postManUser);
+
+        ResCreateUserDTO resCreateUserDTO = new ResCreateUserDTO();
+        ResCreateUserDTO.CompanyUser com = new ResCreateUserDTO.CompanyUser();
+
+        resCreateUserDTO.setName(userNew.getName());
+        resCreateUserDTO.setAddress(userNew.getAddress());
+        resCreateUserDTO.setId(userNew.getId());
+        resCreateUserDTO.setGender(userNew.getGender());
+        resCreateUserDTO.setAge(userNew.getAge());
+        resCreateUserDTO.setCreatedAt(userNew.getCreatedAt());
+        resCreateUserDTO.setEmail(userNew.getEmail());
+
+        if (userNew.getCompany() != null) {
+            com.setId(userNew.getCompany().getId());
+            com.setName(userNew.getCompany().getName());
+            resCreateUserDTO.setCompany(com);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resCreateUserDTO);
     }
 
 }

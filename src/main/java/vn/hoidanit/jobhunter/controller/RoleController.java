@@ -44,11 +44,6 @@ public class RoleController {
             throw new InvalidException("Role with id = " + r.getId() + " is not existed");
         }
 
-        // check name
-        if (this.roleService.existByName(r.getName())) {
-            throw new InvalidException("Role with name = " + r.getName() + " is existed");
-        }
-
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.UpdateARoleService(r));
     }
 
@@ -75,5 +70,18 @@ public class RoleController {
 
         return ResponseEntity.ok(this.roleService.GetRolesService(pageable));
     }
+
+    @GetMapping("/roles/{id}")
+    @ApiMessage("Fetch role by id")
+    public ResponseEntity<Role> GetARoleByIdController(@PathVariable("id") long id) throws InvalidException {
+
+        Role role = this.roleService.GetARoleByIdService(id);
+        if (role == null) {
+            throw new InvalidException("Resume với id = " + id + " không tồn tại");
+        }
+
+        return ResponseEntity.ok().body(role);
+    }
+
 
 }

@@ -130,10 +130,11 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<ResUpdateUserDTO> UpdateUserController(@RequestBody User userRequest) {
         User userUpdate = this.userService.UpdateUserService(userRequest);
-        System.out.println(userUpdate);
+
         if(userUpdate != null) {
             ResUpdateUserDTO resUpdateUserDTO = new ResUpdateUserDTO();
             ResUpdateUserDTO.CompanyUser com = new ResUpdateUserDTO.CompanyUser();
+            ResUpdateUserDTO.RoleUser roleUser = new ResUpdateUserDTO.RoleUser();
 
             resUpdateUserDTO.setId(userUpdate.getId());
             resUpdateUserDTO.setName(userUpdate.getName());
@@ -144,10 +145,13 @@ public class UserController {
             if (userUpdate.getCompany() != null) {
                 com.setId(userUpdate.getCompany().getId());
                 com.setName(userUpdate.getCompany().getName());
-
                 resUpdateUserDTO.setCompany(com);
             }
 
+            if (userUpdate.getRole() != null) {
+                roleUser.setName(userUpdate.getRole().getName());
+                resUpdateUserDTO.setRole(roleUser);
+            }
 
             return ResponseEntity.status(HttpStatus.OK).body(resUpdateUserDTO);
         }

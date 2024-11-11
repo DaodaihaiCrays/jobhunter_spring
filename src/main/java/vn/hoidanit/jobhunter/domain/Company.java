@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name = "companies")
 @Getter
 @Setter
+@ToString
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +40,18 @@ public class Company {
 
     private String updatedBy;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+   // Chỉ có cascade = CascadeType.REMOVE: Xóa Parent sẽ xóa Child,
+   // nhưng chỉ loại bỏ Child khỏi children thì không xóa Child trong cơ sở dữ liệu.
+    // Nó chỉ không còn trong danh sách children của Parent trong bộ nhớ của ứng dụng mà thôi.
+
+   // Chỉ có orphanRemoval = true: Loại bỏ Child khỏi children sẽ xóa Child khỏi cơ sở dữ liệu,
+   // nhưng xóa Parent thì không xóa Child.
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     List<User> users;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     List<Job> jobs;
 
     @PrePersist

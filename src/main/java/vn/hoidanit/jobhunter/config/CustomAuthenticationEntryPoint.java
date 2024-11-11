@@ -16,8 +16,7 @@ import java.util.Optional;
 
 
 // xử lý lỗi xác thực và không can thiệp vào quá trình phân quyền (authorization).
-// Nó chỉ được gọi khi xác thực thất bại, và không liên quan đến các lỗi phân quyền
-// (như lỗi 403 Forbidden khi người dùng không có quyền).
+// Dùng cho TH token không có, kh hợp lệ, bị hết hạn, liên quan token.
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

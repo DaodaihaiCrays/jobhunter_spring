@@ -3,11 +3,13 @@ package vn.hoidanit.jobhunter.service;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
+import vn.hoidanit.jobhunter.domain.Job;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.CompanyRepository;
 
 import org.springframework.data.domain.Pageable;
+import vn.hoidanit.jobhunter.repository.JobRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 import java.util.List;
@@ -17,11 +19,14 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
+    private JobRepository jobRepository;
 
-    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository, JobRepository jobRepository) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
+        this.jobRepository = jobRepository;
     }
+
 
     public Company CreateCompanyService(Company company) {
         return this.companyRepository.save(company);
@@ -57,6 +62,8 @@ public class CompanyService {
             if(company==null)
                 throw new RuntimeException("Delete unsuccessful");
 
+
+            // Xóa luôn user thuộc company đó chứ jpa không tự làm giúp
             List<User> users = this.userRepository.findByCompany(company);
             this.userRepository.deleteAll(users);
 

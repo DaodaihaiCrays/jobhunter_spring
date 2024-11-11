@@ -15,12 +15,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
 @Entity
 @Table(name = "permissions")
 @Getter
 @Setter
+@ToString
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

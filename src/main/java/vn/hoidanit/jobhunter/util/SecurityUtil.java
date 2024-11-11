@@ -35,7 +35,12 @@ public class SecurityUtil {
     @Value("${config.jwt.base64-secret}")
     private String keyJwt;
 
-    public String createAccessToken(String email, ResLoginDTO.UserLogin userLogin) {
+    public String createAccessToken(String email, ResLoginDTO res) {
+        ResLoginDTO.UserInsideToken userToken = new ResLoginDTO.UserInsideToken();
+        userToken.setId(res.getUser().getId());
+        userToken.setEmail(res.getUser().getEmail());
+        userToken.setName(res.getUser().getName());
+
         Instant now = Instant.now();
         Instant validity = now.plus(this.expirationAccessTokenJwt, ChronoUnit.SECONDS);
         // @formatter:off
@@ -43,7 +48,7 @@ public class SecurityUtil {
                 .issuedAt(now)
                 .expiresAt(validity)
                 .subject(email)
-                .claim("data", userLogin)
+                .claim("data", userToken)
                 .build();
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,
@@ -51,6 +56,13 @@ public class SecurityUtil {
     }
 
     public String createRefreshToken(String email, ResLoginDTO resLoginDTO) {
+
+        ResLoginDTO.UserInsideToken userToken = new ResLoginDTO.UserInsideToken();
+        userToken.setId(resLoginDTO.getUser().getId());
+        userToken.setEmail(resLoginDTO.getUser().getEmail());
+        userToken.setName(resLoginDTO.getUser().getName());
+
+
         Instant now = Instant.now();
         Instant validity = now.plus(this.expirationRefreshTokenJwt, ChronoUnit.SECONDS);
         // @formatter:off
@@ -58,7 +70,7 @@ public class SecurityUtil {
                 .issuedAt(now)
                 .expiresAt(validity)
                 .subject(email)
-                .claim("data", resLoginDTO)
+                .claim("data", userToken)
                 .build();
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,

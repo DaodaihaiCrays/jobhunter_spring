@@ -25,4 +25,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findUserByRefreshTokenAndEmail(String token, String email);
 
   List<User> findByCompany(Company company);
+
 }

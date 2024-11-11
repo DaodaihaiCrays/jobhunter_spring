@@ -76,4 +76,14 @@ public class PermissionService {
         rs.setResult(pPermissions.getContent());
         return rs;
     }
+
+    public boolean isSameName(Permission p) {
+        Permission permissionDB = this.GetPermissionByIdService(p.getId());
+        if (permissionDB != null) {
+            if (permissionDB.getName().equals(p.getName()))
+                return true;
+        }
+        return false;
+    }
+
 }

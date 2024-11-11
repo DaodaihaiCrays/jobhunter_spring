@@ -16,6 +16,15 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalException {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestRespone<Object>> handleAllException(Exception ex) {
+        RestRespone<Object> res = new RestRespone<Object>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setMessage(ex.getMessage());
+        res.setError("internal Server Error");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
+
     @ExceptionHandler(value = {
             UsernameNotFoundException.class,
             BadCredentialsException.class,
@@ -26,7 +35,6 @@ public class GlobalException {
         RestRespone<Object> res = new RestRespone<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setError(exception.getMessage());
-//        res.setMessage("username or password is wrong");
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
