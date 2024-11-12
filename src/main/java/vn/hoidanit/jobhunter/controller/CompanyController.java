@@ -48,9 +48,9 @@ public class CompanyController {
 
         try {
             this.companyService.DeleteACompanyService(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Delete successful");
+            return ResponseEntity.status(HttpStatus.OK).body("delete successful");
         } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.OK).body("Delete unsuccessful");
+            return ResponseEntity.status(HttpStatus.OK).body("delete unsuccessful");
         }
     }
 

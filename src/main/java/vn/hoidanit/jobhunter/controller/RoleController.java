@@ -31,7 +31,7 @@ public class RoleController {
     public ResponseEntity<Role> CreateARoleController(@Valid @RequestBody Role r) throws InvalidException {
         // check name
         if (this.roleService.existByName(r.getName())) {
-            throw new InvalidException("Role with name = " + r.getName() + " is existed");
+            throw new InvalidException("role with name = " + r.getName() + " can not find");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.CreateARoleService(r));
     }
@@ -41,12 +41,12 @@ public class RoleController {
     public ResponseEntity<Role> UpdateARoleController(@Valid @RequestBody Role r) throws InvalidException {
         // check id
         if (this.roleService.GetARoleByIdService(r.getId()) == null) {
-            throw new InvalidException("Role with id = " + r.getId() + " is not existed");
+            throw new InvalidException("role with id = " + r.getId() + " can not find");
         }
 
         // check name
         if (this.roleService.existByName(r.getName())) {
-            throw new InvalidException("Role with name = " + r.getName() + " is existed");
+            throw new InvalidException("role with name = " + r.getName() + " can not find");
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.UpdateARoleService(r));
@@ -57,7 +57,7 @@ public class RoleController {
     public ResponseEntity<Void> DeleteARoleController(@PathVariable("id") long id) throws InvalidException {
         // check id
         if (this.roleService.GetARoleByIdService(id) == null) {
-            throw new InvalidException("Role with id = " + id + " is not existed");
+            throw new InvalidException("role with id = " + id + " can not find");
         }
         this.roleService.DeleteARoleService(id);
         return ResponseEntity.ok().body(null);

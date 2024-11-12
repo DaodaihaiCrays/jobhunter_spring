@@ -40,7 +40,7 @@ public class UserService {
 
     public User GetUserByIdService(long id) {
         User user= this.userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("User with ID " + id + " can not find"));
         return user;
     }
 

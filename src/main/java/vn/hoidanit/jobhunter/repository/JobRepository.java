@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import vn.hoidanit.jobhunter.domain.Job;
 
 @Repository
-public interface JobRepository extends JpaRepository<Job, Long>,
-        JpaSpecificationExecutor<Job> {
+public interface JobRepository extends JpaRepository<Job, Long>{
 
 }

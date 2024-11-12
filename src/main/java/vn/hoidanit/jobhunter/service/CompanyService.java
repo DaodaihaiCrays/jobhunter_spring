@@ -47,7 +47,7 @@ public class CompanyService {
 
     public Company GetACompanyById(long id) {
         return this.companyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Company with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("company with ID " + id + " can not find"));
     }
 
     public void DeleteACompanyService(long id) throws RuntimeException{
@@ -55,7 +55,7 @@ public class CompanyService {
             Company company = GetACompanyById(id);
 
             if(company==null)
-                throw new RuntimeException("Delete unsuccessful");
+                throw new RuntimeException("delete unsuccessful");
 
             List<User> users = this.userRepository.findByCompany(company);
             this.userRepository.deleteAll(users);
@@ -67,7 +67,7 @@ public class CompanyService {
         Company company = GetACompanyById(companyReq.getId());
 
         if(company==null)
-            throw new RuntimeException("Company with ID " + companyReq.getId() + " not found");
+            throw new RuntimeException("company with ID " + companyReq.getId() + " can not find");
 
         company.setName(companyReq.getName());
         company.setUpdatedAt(companyReq.getUpdatedAt());

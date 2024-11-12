@@ -65,8 +65,6 @@ public class SecurityConfiguration {
             }
         };
     }
-
-    // convert data chứa trong token, lưu vào Spring Security Context để reuse
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -95,18 +93,12 @@ public class SecurityConfiguration {
                                         "api/v1/auth/refresh", "/storage/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                // dòng dưới tự kích hoạt filter BearerTokenAuthenticationFilter
-                // Filter này sẽ “tự động tách” Bear Token (không cần phải làm thủ công)
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
-                     // Chỉ định customAuthenticationEntryPoint sẽ xử lý lỗi xác thực
-                        // khi token không hợp lệ hoặc thiếu token.
                     .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .exceptionHandling(
                         exceptions -> exceptions
-                                // khi người dùng chưa đăng nhập hoặc thiếu token.
                                 .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) //401
-                                // khi người dùng không có quyền truy cập tài nguyên.
                                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

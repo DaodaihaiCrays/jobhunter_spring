@@ -42,7 +42,7 @@ public class JobController {
     public ResponseEntity<ResUpdateJobDTO> UpdateAJob(@Valid @RequestBody Job job) throws InvalidException {
         Optional<Job> currentJob = this.jobService.GetJobByIdService(job.getId());
         if (!currentJob.isPresent()) {
-            throw new InvalidException("Job not found");
+            throw new InvalidException("job can not find");
         }
 
         job.setCreatedAt(currentJob.get().getCreatedAt());
@@ -57,7 +57,7 @@ public class JobController {
     public ResponseEntity<Void> DeleteAJob(@PathVariable("id") long id) throws InvalidException {
         Optional<Job> currentJob = this.jobService.GetJobByIdService(id);
         if (!currentJob.isPresent()) {
-            throw new InvalidException("Job not found");
+            throw new InvalidException("job not found");
         }
         this.jobService.DeleteJobService(id);
         return ResponseEntity.ok().body(null);
@@ -68,7 +68,7 @@ public class JobController {
     public ResponseEntity<Job> GetJobById(@PathVariable("id") long id) throws InvalidException {
         Optional<Job> currentJob = this.jobService.GetJobByIdService(id);
         if (!currentJob.isPresent()) {
-            throw new InvalidException("Job not found");
+            throw new InvalidException("job can not find");
         }
 
         return ResponseEntity.ok().body(currentJob.get());

@@ -36,7 +36,7 @@ public class ResumeController {
         // check id exists
         boolean isIdExist = this.resumeService.CheckResumeExistByUserAndJobService(resume);
         if (!isIdExist) {
-            throw new InvalidException("User id or Job id is not exist");
+            throw new InvalidException("user id or job id can not find");
         }
 
         ResCreateResumeDTO resCreateResumeDTO = this.resumeService.CreateAResumeService(resume);
@@ -57,7 +57,7 @@ public class ResumeController {
         // check id exist
         Optional<Resume> reqResumeOptional = this.resumeService.GetById(resume.getId());
         if (reqResumeOptional.isEmpty()) {
-            throw new InvalidException("Resume with id = " + resume.getId() + " is not exist");
+            throw new InvalidException("resume with id = " + resume.getId() + " can not find");
         }
 
         Resume reqResume = reqResumeOptional.get();
@@ -71,7 +71,7 @@ public class ResumeController {
     public ResponseEntity<Void> DeleteAResumeController(@PathVariable("id") long id) throws InvalidException {
         Optional<Resume> reqResumeOptional = this.resumeService.GetById(id);
         if (reqResumeOptional.isEmpty()) {
-            throw new InvalidException("Resume with id = " + id + " is not exist");
+            throw new InvalidException("resume with id = " + id + " can not find");
         }
 
         this.resumeService.delete(id);
@@ -84,7 +84,7 @@ public class ResumeController {
         Optional<Resume> reqResumeOptional = this.resumeService.GetById(id);
 
         if (reqResumeOptional.isEmpty()) {
-            throw new InvalidException("Resume with id = " + id + " is not exist");
+            throw new InvalidException("resume with id = " + id + " can not find");
         }
 
         return ResponseEntity.ok().body(this.resumeService.GetAResumeService(reqResumeOptional.get()));

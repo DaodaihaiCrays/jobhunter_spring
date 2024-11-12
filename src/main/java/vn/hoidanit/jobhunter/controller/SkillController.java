@@ -31,7 +31,7 @@ public class SkillController {
     public ResponseEntity<Skill> CreateASkill(@Valid @RequestBody Skill s) throws InvalidException {
         // check name
         if (s.getName() != null && this.skillService.isNameExist(s.getName())) {
-            throw new InvalidException("Skill name = " + s.getName() + " đã tồn tại");
+            throw new InvalidException("skill name = " + s.getName() + " đã tồn tại");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(this.skillService.CreateSkillService(s));
     }
@@ -42,12 +42,12 @@ public class SkillController {
         // check id
         Skill currentSkill = this.skillService.GetSkillByIdService(s.getId());
         if (currentSkill == null) {
-            throw new InvalidException("Skill id = " + s.getId() + " không tồn tại");
+            throw new InvalidException("skill id = " + s.getId() + " can not find");
         }
 
         // check name
         if (s.getName() != null && this.skillService.isNameExist(s.getName())) {
-            throw new InvalidException("Skill name = " + s.getName() + " đã tồn tại");
+            throw new InvalidException("skill name = " + s.getName() + " exist");
         }
 
         currentSkill.setName(s.getName());
@@ -60,7 +60,7 @@ public class SkillController {
         // check id
         Skill currentSkill = this.skillService.GetSkillByIdService(id);
         if (currentSkill == null) {
-            throw new InvalidException("skill id = " + id + " is not exist");
+            throw new InvalidException("skill id = " + id + " can not find");
         }
         this.skillService.DeleteSkillService(id);
         return ResponseEntity.ok().body(null);

@@ -37,7 +37,7 @@ public class UserController {
     public ResponseEntity<ResCreateUserDTO> CreateUserController(@Valid  @RequestBody User userRequest) throws InvalidException {
 
         if(this.userService.checkEmailExist(userRequest.getEmail()))
-            throw new InvalidException("Email is existed");
+            throw new InvalidException("email is exist");
 
         String hashPassword = this.passwordEncoder.encode(userRequest.getPassword());
         userRequest.setPassword(hashPassword);
@@ -67,14 +67,14 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<RestRespone<String>> DeleteUserController(@PathVariable("id") long id)
             throws InvalidException{
-        if (id < 1) throw new InvalidException("Id is not lower than 0");
+        if (id < 1) throw new InvalidException("id is not lower than 0");
 
         this.userService.DeleteUserService(id);
 
         RestRespone<String> response = new RestRespone<>();
         response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Delete user successful");
-        response.setData("Delete user successful");
+        response.setMessage("delete user successful");
+        response.setData("delete user successful");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

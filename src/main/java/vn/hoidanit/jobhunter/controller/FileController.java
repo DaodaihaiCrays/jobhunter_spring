@@ -33,7 +33,6 @@ public class FileController {
             @RequestParam("folder") String folder
     ) throws URISyntaxException, IOException, FindException {
 
-        // Validate, kh cần validate TH size vì application.prperties có 2 dòng size MB nên spring tự hiểu
         if(file == null || file.isEmpty()) {
             throw new FindException("file is not empty");
         }

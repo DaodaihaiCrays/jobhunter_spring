@@ -39,21 +39,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResLoginDTO> Login(@Valid @RequestBody ReqLoginDTO loginDTO) {
-        // Nạp input gồm username/password vào Security
-        // Đóng gói thông tin đăng nhập của người dùng một cách an toàn
-        // trước khi được gửi đến quy trình xác thực của Spring Security.
+
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
 
-        // Mục đích: Gọi phương thức authenticate từ interface AuthenticationManager
-        // để thực hiện xác thực thông tin đăng nhập của người dùng.
-
-        // Chức năng: AuthenticationManager sẽ gọi UserDetailsService
-        // (thường triển khai qua phương thức loadUserByUsername)
-        // để lấy thông tin người dùng từ cơ sở dữ liệu
-        // và xác thực xem thông tin đăng nhập (username, password) có hợp lệ hay không.
-
-        // Xác thực người dùng => cần viết hàm loadUserByUsername
         Authentication authentication =
                 authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 

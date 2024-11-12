@@ -13,14 +13,11 @@ import vn.hoidanit.jobhunter.domain.response.RestRespone;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 
 
-// Class này dùng để format lại response trước khi trả về cho user
-// Annotation dùng để can thiệp vào controller
 @RestControllerAdvice
 public class FormatRestRespone implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
-        // Muốn bất cứ phản hồi respone nào cũng được ghi đè, format lại. Nếu true thì chạy
-        // xuống hàm ở dưới.
+
         return true;
     }
 
