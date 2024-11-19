@@ -5,7 +5,7 @@ import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.enum_package.ResumeStateEnum;
+import vn.hoidanit.jobhunter.util.enums.ResumeStateEnum;
 
 @Getter
 @Setter

@@ -1,7 +1,7 @@
 package vn.hoidanit.jobhunter.domain.dto;
 
 import lombok.*;
-import vn.hoidanit.jobhunter.util.enum_package.LevelEnum;
+import vn.hoidanit.jobhunter.util.enums.LevelEnum;
 
 import java.time.Instant;
 import java.util.List;

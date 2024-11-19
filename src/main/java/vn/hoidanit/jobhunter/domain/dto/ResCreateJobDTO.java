@@ -5,10 +5,12 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.enum_package.LevelEnum;
+import lombok.ToString;
+import vn.hoidanit.jobhunter.util.enums.LevelEnum;
 
 @Getter
 @Setter
+@ToString
 public class ResCreateJobDTO {
     private long id;
     private String name;
@@ -23,6 +25,8 @@ public class ResCreateJobDTO {
 
     private Instant startDate;
     private Instant endDate;
+
+
     private boolean isActive;
 
     private List<String> skills;

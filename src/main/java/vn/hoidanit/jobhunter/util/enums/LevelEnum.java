@@ -1,4 +1,4 @@
-package vn.hoidanit.jobhunter.util.enum_package;
+package vn.hoidanit.jobhunter.util.enums;
 
 public enum LevelEnum {
     INTERN, FRESHER, JUNIOR, MIDDLE, SENIOR

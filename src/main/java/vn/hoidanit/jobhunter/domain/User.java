@@ -6,9 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
-import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
+import vn.hoidanit.jobhunter.util.enums.GenderEnum;
 
 import java.time.Instant;
 import java.util.List;

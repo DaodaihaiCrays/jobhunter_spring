@@ -3,8 +3,6 @@ package vn.hoidanit.jobhunter.domain;
 import java.time.Instant;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
-import vn.hoidanit.jobhunter.util.enum_package.LevelEnum;
+import vn.hoidanit.jobhunter.util.enums.LevelEnum;
 
 @Entity
 @Table(name = "jobs")
@@ -41,7 +39,8 @@ public class Job {
 
     private Instant startDate;
     private Instant endDate;
-    private boolean isActive;
+
+    private Boolean active;
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;

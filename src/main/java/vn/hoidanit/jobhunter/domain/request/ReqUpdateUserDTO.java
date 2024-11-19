@@ -2,7 +2,7 @@ package vn.hoidanit.jobhunter.domain.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
+import vn.hoidanit.jobhunter.util.enums.GenderEnum;
 
 @Getter
 @Setter

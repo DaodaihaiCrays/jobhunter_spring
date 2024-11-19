@@ -33,6 +33,8 @@ public class JobService {
     }
 
     public ResCreateJobDTO create(Job j) {
+        System.out.println(j);
+        System.out.println("======================9999999999");
         // check skills
         if (j.getSkills() != null) {
             List<Long> reqSkills = j.getSkills()
@@ -56,7 +58,7 @@ public class JobService {
         dto.setLevel(currentJob.getLevel());
         dto.setStartDate(currentJob.getStartDate());
         dto.setEndDate(currentJob.getEndDate());
-        dto.setActive(currentJob.isActive());
+        dto.setActive(currentJob.getActive());
         dto.setCreatedAt(currentJob.getCreatedAt());
         dto.setCreatedBy(currentJob.getCreatedBy());
 
@@ -66,6 +68,9 @@ public class JobService {
                     .collect(Collectors.toList());
             dto.setSkills(skills);
         }
+
+        System.out.println(dto);
+        System.out.println("======================");
 
         return dto;
     }
@@ -94,7 +99,7 @@ public class JobService {
         dto.setLevel(currentJob.getLevel());
         dto.setStartDate(currentJob.getStartDate());
         dto.setEndDate(currentJob.getEndDate());
-        dto.setActive(currentJob.isActive());
+        dto.setActive(currentJob.getActive());
         dto.setUpdatedAt(currentJob.getUpdatedAt());
         dto.setUpdatedBy(currentJob.getUpdatedBy());
         dto.setCreatedAt(currentJob.getCreatedAt());

@@ -15,6 +15,7 @@ import vn.hoidanit.jobhunter.domain.dto.ResUpdateJobDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.JobService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
+import vn.hoidanit.jobhunter.util.enums.LevelEnum;
 import vn.hoidanit.jobhunter.util.error.InvalidException;
 import org.springframework.data.domain.Pageable;
 
@@ -33,6 +34,8 @@ public class JobController {
     @PostMapping()
     @ApiMessage("Create a job")
     public ResponseEntity<ResCreateJobDTO> CreateAJob(@Valid @RequestBody Job job) {
+        System.out.println(job);
+        System.out.println("======================");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.jobService.create(job));
     }

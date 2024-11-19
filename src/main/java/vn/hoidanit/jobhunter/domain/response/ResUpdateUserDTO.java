@@ -5,7 +5,7 @@ import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import vn.hoidanit.jobhunter.util.enum_package.GenderEnum;
+import vn.hoidanit.jobhunter.util.enums.GenderEnum;
 
 @Getter
 @Setter
