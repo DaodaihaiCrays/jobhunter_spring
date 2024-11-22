@@ -29,17 +29,23 @@ public class UserService {
     }
 
     public User CreateUserService(User user) {
-        if (user.getCompany() != null) {
-            Optional<Company> companyOptional = Optional.ofNullable(this.companyService.GetACompanyById(user.getCompany().getId()));
-            user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
-        }
+        System.out.println(user);
+        System.out.println(user.getRole());
 
-        // check role
+        System.out.println("========================");
+//        if (user.getCompany() != null) {
+//            Optional<Company> companyOptional = Optional.ofNullable(this.companyService.GetACompanyById(user.getCompany().getId()));
+//            user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
+//        }
+//
+//        // check role
         if (user.getRole() != null) {
             Role r = this.roleService.GetARoleByIdService(user.getRole().getId());
+
             user.setRole(r != null ? r : null);
         }
 
+        user.getRole().setId(user.getRole().getId());
 
         return this.userRepository.save(user);
     }

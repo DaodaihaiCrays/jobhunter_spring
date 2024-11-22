@@ -71,7 +71,8 @@ public class RoleController {
         return ResponseEntity.ok(this.roleService.GetRolesService(pageable));
     }
 
-    @GetMapping("/roles/{id}")
+
+    @GetMapping("/{id}")
     @ApiMessage("Fetch role by id")
     public ResponseEntity<Role> GetARoleByIdController(@PathVariable("id") long id) throws InvalidException {
 

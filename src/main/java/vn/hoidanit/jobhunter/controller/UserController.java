@@ -34,7 +34,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<ResCreateUserDTO> CreateUserController(@Valid  @RequestBody User userRequest) throws InvalidException {
+    public ResponseEntity<ResCreateUserDTO> CreateUserController(@Valid @RequestBody User userRequest) throws InvalidException {
+
+//        System.out.println(userRequest.getRole());
 
         if(this.userService.checkEmailExist(userRequest.getEmail()))
             throw new InvalidException("Email is existed");
@@ -46,6 +48,7 @@ public class UserController {
 
         ResCreateUserDTO resCreateUserDTO = new ResCreateUserDTO();
         ResCreateUserDTO.CompanyUser com = new ResCreateUserDTO.CompanyUser();
+        ResCreateUserDTO.RoleUser roleUser = new ResCreateUserDTO.RoleUser();
 
         resCreateUserDTO.setName(userNew.getName());
         resCreateUserDTO.setAddress(userNew.getAddress());
@@ -59,6 +62,10 @@ public class UserController {
             com.setId(userNew.getCompany().getId());
             com.setName(userNew.getCompany().getName());
             resCreateUserDTO.setCompany(com);
+        }
+        if (userNew.getRole() != null) {
+            roleUser.setName(userNew.getRole().getName());
+            resCreateUserDTO.setRole(roleUser);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resCreateUserDTO);

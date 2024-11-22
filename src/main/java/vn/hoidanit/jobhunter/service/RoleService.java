@@ -45,6 +45,8 @@ public class RoleService {
     }
 
     public Role GetARoleByIdService(long id) {
+        System.out.println(id);
+        System.out.println("------------");
         Optional<Role> roleOptional = this.roleRepository.findById(id);
         if (roleOptional.isPresent())
             return roleOptional.get();
