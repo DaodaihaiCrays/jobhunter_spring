@@ -33,10 +33,10 @@ public class UserService {
         System.out.println(user.getRole());
 
         System.out.println("========================");
-//        if (user.getCompany() != null) {
-//            Optional<Company> companyOptional = Optional.ofNullable(this.companyService.GetACompanyById(user.getCompany().getId()));
-//            user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
-//        }
+        if (user.getCompany() != null) {
+            Optional<Company> companyOptional = Optional.ofNullable(this.companyService.GetACompanyById(user.getCompany().getId()));
+            user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
+        }
 //
 //        // check role
         if (user.getRole() != null) {
