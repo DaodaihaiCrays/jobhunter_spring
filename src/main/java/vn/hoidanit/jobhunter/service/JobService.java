@@ -33,8 +33,6 @@ public class JobService {
     }
 
     public ResCreateJobDTO create(Job j) {
-        System.out.println(j);
-        System.out.println("======================9999999999");
         // check skills
         if (j.getSkills() != null) {
             List<Long> reqSkills = j.getSkills()
@@ -69,8 +67,6 @@ public class JobService {
             dto.setSkills(skills);
         }
 
-        System.out.println(dto);
-        System.out.println("======================");
 
         return dto;
     }
