@@ -56,7 +56,7 @@ public class JobService {
         dto.setLevel(currentJob.getLevel());
         dto.setStartDate(currentJob.getStartDate());
         dto.setEndDate(currentJob.getEndDate());
-        dto.setActive(currentJob.getActive());
+        dto.setActive(currentJob.isActive());
         dto.setCreatedAt(currentJob.getCreatedAt());
         dto.setCreatedBy(currentJob.getCreatedBy());
 
@@ -95,7 +95,7 @@ public class JobService {
         dto.setLevel(currentJob.getLevel());
         dto.setStartDate(currentJob.getStartDate());
         dto.setEndDate(currentJob.getEndDate());
-        dto.setActive(currentJob.getActive());
+        dto.setActive(currentJob.isActive());
         dto.setUpdatedAt(currentJob.getUpdatedAt());
         dto.setUpdatedBy(currentJob.getUpdatedBy());
         dto.setCreatedAt(currentJob.getCreatedAt());

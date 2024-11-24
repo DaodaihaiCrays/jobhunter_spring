@@ -38,10 +38,10 @@ public class Company {
 
     private String updatedBy;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<User> users;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     List<Job> jobs;
 
     @PrePersist

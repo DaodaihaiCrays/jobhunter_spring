@@ -3,6 +3,8 @@ package vn.hoidanit.jobhunter.domain;
 import java.time.Instant;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -39,8 +41,7 @@ public class Job {
 
     private Instant startDate;
     private Instant endDate;
-
-    private Boolean active;
+    private boolean isActive;
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
@@ -55,7 +56,8 @@ public class Job {
     @JoinTable(name = "job_skill", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
-    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     List<Resume> resumes;
 
 
