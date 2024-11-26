@@ -34,8 +34,6 @@ public class JobController {
     @PostMapping()
     @ApiMessage("Create a job")
     public ResponseEntity<ResCreateJobDTO> CreateAJob(@Valid @RequestBody Job job) {
-        System.out.println(job);
-        System.out.println("======================");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.jobService.create(job));
     }

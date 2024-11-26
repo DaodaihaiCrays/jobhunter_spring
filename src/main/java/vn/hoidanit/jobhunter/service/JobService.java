@@ -112,6 +112,8 @@ public class JobService {
     }
 
     public void DeleteJobService(long id) {
+
+
         this.jobRepository.deleteById(id);
     }
 
