@@ -77,6 +77,14 @@ public class SecurityConfiguration {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
         grantedAuthoritiesConverter.setAuthorityPrefix("");
+
+        // Khi bạn chỉ định claim name, converter sẽ tìm trong payload JWT.
+
+        //Nếu claim đó là một collection/array các chuỗi or string → nó sẽ map từng chuỗi thành SimpleGrantedAuthority.
+
+        //Nếu claim đó là kiểu khác (object, số, chuỗi đơn lẻ) →
+        // nó bỏ qua, không tạo authority nào -> return [] của trường authorities ơ interface Authentication
+        // khi lưu vào context
         grantedAuthoritiesConverter.setAuthoritiesClaimName("data");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
