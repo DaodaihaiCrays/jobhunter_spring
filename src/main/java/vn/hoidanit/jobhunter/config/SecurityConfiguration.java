@@ -52,6 +52,8 @@ public class SecurityConfiguration {
         return new NimbusJwtEncoder(new ImmutableSecret<>(getSecretKey()));
     }
 
+
+    // check token hợp lệ, Được gọi bởi nội bộ Spring trong filter
     @Bean
     public JwtDecoder jwtDecoder() {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(
@@ -65,6 +67,11 @@ public class SecurityConfiguration {
             }
         };
     }
+
+    // JwtAuthenticationConverter implement interface Authentication (Spring Context lưu Authentication)
+    // Hàm này nhận vào một Jwt (đã được JwtDecoder verify chữ ký, hạn sử dụng, …),
+    // rồi chuyển thành một Authentication (cụ thể là JwtAuthenticationToken)
+    // và BearerTokenAuthenticationFilter sẽ đưa authentication vào context
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -93,6 +100,9 @@ public class SecurityConfiguration {
                                         "api/v1/auth/refresh", "/storage/**").permitAll()
                                 .anyRequest().authenticated()
                 )
+                // Chính dòng .oauth2ResourceServer().jwt() này sẽ kích hoạt:
+                // -> BearerTokenAuthenticationFilter(cũng giúp đưa Authentication vào context nếu token ok) → filter này tự động lấy token từ header
+                // -> JwtDecoder, cụ thể là bean jwtDecoder() là nơi validate token mỗi khi có request gọi API có Bearer token
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                     .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )

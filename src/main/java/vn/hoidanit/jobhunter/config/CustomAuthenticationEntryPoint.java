@@ -25,6 +25,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         this.mapper = mapper;
     }
 
+    // nơi "phản hồi lại" khi token bị phát hiện là không hợp lệ!
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {

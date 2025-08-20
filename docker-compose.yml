@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: springboot_mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: jobhunter_spring
+      MYSQL_ROOT_PASSWORD: 14022002
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - springboot-net
+
+networks:
+  springboot-net:
+
+volumes:
+  mysql_data:

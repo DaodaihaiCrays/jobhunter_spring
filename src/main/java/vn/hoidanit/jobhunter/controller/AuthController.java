@@ -38,11 +38,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    // tự implement Authorization Server bằng tay.
     public ResponseEntity<ResLoginDTO> Login(@Valid @RequestBody ReqLoginDTO loginDTO) {
 
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
 
+        // kích hoạt DaoAuthenticationProvider -> Gọi UserDetailsCustom.loadUserByUsername(username)
+        // → lấy user DB + authorities.
         Authentication authentication =
                 authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
